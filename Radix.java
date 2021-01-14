@@ -43,8 +43,9 @@ public class Radix{
 
         for(int i = 1; i <= length;i++){
             for(int bucketNum = 0; bucketNum < buckets.length;bucketNum++){
-                    for(int bucketIter = 0; bucketIter < buckets[bucketNum].size();bucketIter++){
-                        int iteration = buckets[bucketNum].remove(bucketIter);
+                    int originalSize = buckets[bucketNum].size();
+                    for(int bucketIter = 0; bucketIter < originalSize;bucketIter++){
+                        int iteration = buckets[bucketNum].remove(0);
                         buckets[nth(iteration, i)].add(iteration);
                     }
             }
