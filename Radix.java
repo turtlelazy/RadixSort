@@ -33,11 +33,11 @@ public class Radix{
 
         int length = 0;
         //fill in the buckets
-        for(int i = 0; i < data.size(); i ++){
-            int iteration = data.remove(i);
+        while(data.size() != 0){
+            int iteration = data.remove(0);
             buckets[nth(iteration,0)].add(iteration);
             if (length(iteration) > length){
-                length = length(iteration);
+                length = length(iteration)-1;
             }
         }
 
