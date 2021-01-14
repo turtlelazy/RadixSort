@@ -6,6 +6,16 @@ public class Radix{
 
     }
 
+    public static int nthAsIndex(int n, int col){
+        int place = nth(n,col);
+        boolean negative = n < 0;
+        if(negative){
+            return place * -1 + 9;
+        }
+
+        return place + 10;
+    }
+
     public static int length(int n){
         if(n == 0) {return 1;}
         if(n<0) {n *= -1;}
@@ -62,6 +72,39 @@ public class Radix{
 
     public static void radixSort(SortableLinkedList data){
         
+        // initialize buckets
+        SortableLinkedList[] buckets = new SortableLinkedList[20];
+        for (int i = 0; i < buckets.length; i++) {
+            buckets[i] = new SortableLinkedList();
+        }
+
+        int length = 0;
+        // fill in the buckets
+        while (data.size() != 0) {
+            int iteration = data.remove(0);
+            buckets[nthAsIndex(iteration, 0)].add(iteration);
+            if (length(iteration) > length) {
+                length = length(iteration) - 1;
+            }
+        }
+
+        for (int i = 1; i <= length; i++) {
+
+            int[] originalSizes = new int[20];
+            for (int z = 0; z < 20; z++) {
+                originalSizes[z] = buckets[z].size();
+            }
+
+            for (int bucketNum = 0; bucketNum < buckets.length; bucketNum++) {
+                int originalSize = originalSizes[bucketNum];
+                for (int bucketIter = 0; bucketIter < originalSize; bucketIter++) {
+                    int iteration = buckets[bucketNum].remove(0);
+                    buckets[nthAsIndex(iteration, 0)].add(iteration);
+                }
+            }
+        }
+
+        merge(data, buckets);
     }
 
 }
