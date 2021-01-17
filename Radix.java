@@ -1,8 +1,9 @@
 public class Radix{
     public static int nth(int n, int col){
-        if (n < 0) {n *= -1;}
         int place = (int) Math.pow(10, col);
-        return (n / place)%10; 
+        n = (n / place)%10; 
+        if (n < 0) {n *= -1;}
+        return n;
 
     }
 
@@ -42,6 +43,7 @@ public class Radix{
         }
 
         int length = 0;
+
         //fill in the buckets
         while(data.size() != 0){
             int iteration = data.remove(0);
@@ -51,12 +53,24 @@ public class Radix{
             }
         }
 
+        //merge(data,buckets);
+
+        
         for(int i = 1; i <= length;i++){
 
+            /*
+            while(data.size() != 0){
+                int iteration = data.remove(0);
+                buckets[nth(iteration,i)].add(iteration);
+            }
+            merge(data, buckets);
+            
+            */
             int[] originalSizes = new int[10];
             for (int z = 0; z < 10; z++) {
                 originalSizes[z] = buckets[z].size();
             }
+            
 
             for(int bucketNum = 0; bucketNum < buckets.length;bucketNum++){
                     int originalSize = originalSizes[bucketNum];
@@ -65,13 +79,35 @@ public class Radix{
                         buckets[nth(iteration, i)].add(iteration);
                     }
             }
+            
+            
         }
+        
 
         merge(data, buckets);
     }
 
     public static void radixSort(SortableLinkedList data){
+        radixSortSimple(data);
+        SortableLinkedList[] buckets = new SortableLinkedList[2];
+        for(int i = 0; i < buckets.length;i++){
+            buckets[i] = new SortableLinkedList();
+        }
+
+        while(data.size() > 0){
+            int current = data.remove(0);
+            if(current < 0){
+                buckets[0].add(0,current);
+            }
+            else{
+                buckets[1].add(current);
+            }
+        }
+
+        merge(data, buckets);
+
         
+        /*
         // initialize buckets
         SortableLinkedList[] buckets = new SortableLinkedList[20];
         for (int i = 0; i < buckets.length; i++) {
@@ -105,6 +141,7 @@ public class Radix{
         }
 
         merge(data, buckets);
+        */
     }
 
 }
